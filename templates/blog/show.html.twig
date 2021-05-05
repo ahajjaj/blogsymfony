@@ -12,6 +12,7 @@
           </div>
      </article>
      <section id="commentaires">
+     <h1>{{ article.comments | length }} Commentaires: </h1>
      {% for comment in article.comments %}
           <div class="comment">
                <div class="row">
@@ -24,6 +25,18 @@
                </div>
           </div>
      {% endfor %}
+     {% if app.user %}
+     {{ form_start(formComment) }}
+
+     {{ form_row(formComment.author, {'attr': {'placeholder': "Votre nom" }})}}
+     {{ form_row(formComment.content, {'attr': {'placeholder': "Votre commentaire" }})}}
+     <button type="submit" class="btn btn-success"> Commenter ! </button>
+     
+     {{ form_end(formComment) }}
+
+     {% else %}
+          <h2> Veuillez vous connecter pour <a href="{{ path('security_login') }}">commenter✍️</a></h2>
+     {% endif %}
      </section>
 </section>
 {% endblock %}

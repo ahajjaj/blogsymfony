@@ -12,6 +12,7 @@
     {{ form_row(formArticle.content, {'attr' : {'placeholder' : "Contenu de l'article"}}) }}
     {{ form_row(formArticle.image, {'attr' : {'placeholder' : "URL de l'article"}}) }}
 
+    {% if app.user %}
     <button type="submit" class="btn btn-success">
     {% if editMode %}
         Enregistrer
@@ -19,7 +20,9 @@
         Ajouter l'article
     {% endif %}
     </button>
-
+    {% else %}
+        <h2> Veuillez vous <a href="{{ path('security_login') }}"> connecter </a> pour créer un article 😉 </h2>
+    {% endif %}
     {{ form_end(formArticle) }}
     
 {% endblock %}
