@@ -34,8 +34,8 @@ class Article
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Url
+     * @ORM\Column(type="string")
+     * Assert\Image
      */
     private $image;
 
@@ -54,6 +54,11 @@ class Article
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article")
      */
     private $comments;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="articles")
+    */
+    private $user;
 
     public function __construct()
     {
@@ -89,12 +94,12 @@ class Article
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImage()
     {
         return $this->image;
     }
 
-    public function setImage(string $image)
+    public function setImage($image)
     {
         $this->image = $image;
 
@@ -121,6 +126,18 @@ class Article
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

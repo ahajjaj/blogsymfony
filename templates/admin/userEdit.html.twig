@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+<h1> Modifier l'utilisateur: </h1>
+{% endblock %}
+{% block body %}
+
+    <h1> Modifier  l'utilisateur </h1>
+    
+    {{ form_start(userForm) }}
+    {{ form_row(userForm.email, {'attr' : {'placeholder' : "Modifier l'email"}}) }}
+    {{ form_row(userForm.password, {'attr' : {'placeholder' : "Modifier le mot de passe"}}) }}
+    {{ form_row(userForm.confirm_password, {'attr' : {'placeholder' : "Re-saisir le mot de passe"}}) }}
+    {{ form_row(userForm.roles, {'attr' : {'placeholder' : "Modifier les roles"}}) }}
+    {{ form_end(userForm) }}
+    
+{% endblock %}

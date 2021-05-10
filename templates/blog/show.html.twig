@@ -10,6 +10,15 @@
                     <img src="{{ article.image }}" alt="">
               {{ article.content | raw }}
           </div>
+          <div class="col">
+          {% if article.image %}
+          <img class="img-fluid" src="{{asset('uploads/article/image/' ~ article.image) }}">
+          {% endif %}
+          </div>
+          <div>
+          {{ article.user.username }}
+          </div>
+          <a href="{{path('blog_edit', {'id': article.id})}}"> Modifier ! </a>
      </article>
      <section id="commentaires">
      <h1>{{ article.comments | length }} Commentaires: </h1>

@@ -35,7 +35,19 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
     */
-
+    public function findByCategory($slug)
+    {
+        return $this->createQueryBuilder('a')
+            ->add('select', 'a')
+            ->leftJoin('a.category', 'c')
+            ->andWhere('c.name LIKE :category')
+            ->setParameter('category', $slug)
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     /*
     public function findOneBySomeField($value): ?Category
     {

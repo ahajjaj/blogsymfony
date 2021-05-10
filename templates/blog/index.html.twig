@@ -26,6 +26,11 @@
                          <div class="col">
                               {{comment.content | raw }}
                          </div>
+                         <div class="col">
+					{% if article.image %}
+					<img class="img-fluid" src="{{asset('uploads/article/image/' ~ article.image) }}">
+				     {% endif %}
+                         </div>
                     </div>
                </div>
           {% endfor %}

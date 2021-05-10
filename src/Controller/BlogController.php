@@ -6,12 +6,14 @@ use App\Entity\Article;
 use App\Entity\Comment;
 use App\Form\ArticleType;
 use App\Form\CommentType;
+use App\Service\FileUploader;
 use App\Repository\ArticleRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CategoryRepository;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -36,6 +38,25 @@ class BlogController extends AbstractController
     }
 
     /**
+     * @Route("/categories", name="show_categories")
+     */
+    public function category(CategoryRepository $repo, int $id): Response
+    {
+        //$repo = $this->getDoctrine()->getRepository(Article::class);
+        $category = $repo->findAll();
+
+        $articles = $repo->findByCategory($id);
+
+        $category = $articles->getCategory();
+        
+        return $this->render('blog/category.html.twig', [
+            'controller_name' => 'BlogController',
+            'categories' => $category,
+            'articlesByCategory' => $articles
+        ]);
+    }
+
+    /**
      * @Route("/", name="home")
      */
     public function home() {
@@ -46,7 +67,7 @@ class BlogController extends AbstractController
      * @Route("/blog/new", name="new_article")
      * @Route("/blog/{id}/edit", name="blog_edit")
      */
-    public function form(Article $article = null, Request $request, EntityManagerInterface $manager) {
+    public function addArticle(Article $article = null, Request $request, EntityManagerInterface $manager, FileUploader $fileuploader) {
 
         if(!$article){
             $article = new Article();
@@ -64,12 +85,18 @@ class BlogController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             if(!$article->getId()) {
-                $article->setCreatedAt(new \DateTime());
+                $article->setCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
             }
+            $file = $article->getImage(); 
+            $filename = $file ? $fileuploader->upload($file, $this->getParameter('article_image_directory')) : '';
+            $article->setImage($filename);
+            //l'auteur de l'article est l'utilisateur connecté
+            $article->setUser($this->getUser());
 
             $manager->persist($article);
             $manager->flush();
 
+	        $this->addFlash('success', 'article ajouté');
             return $this->redirectToRoute('blog_show', [
                 'id' => $article->getId()
             ]);
@@ -84,7 +111,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/blog/{id}", name="blog_show")
      */
-    public function show(Article $article, Request $request, EntityManagerInterface $manager) {
+    public function showArticle(Article $article, Request $request, EntityManagerInterface $manager) {
         //$repo = $this->getDoctrine()->getRepository(Article::class);
         //$article = $repo->find($id);
         $comment = new Comment();
@@ -105,8 +132,15 @@ class BlogController extends AbstractController
         }
         return $this->render('blog/show.html.twig', [
             'article'=> $article,
-            'formComment'=> $form->createView()
+            'formComment'=> $form->createView(),
         ]);
     }
 
+    /**
+     * @Route("/article/modifier/{id}", name="edit_admin" )
+     */
+    public function modifArticle(Request $request, Article $article){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        // t o  b e  c o n t i n u e d ...
+    }
 }
