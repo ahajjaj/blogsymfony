@@ -35,7 +35,7 @@ class Article
 
     /**
      * @ORM\Column(type="string")
-     * Assert\Image
+     * @Assert\Image
      */
     private $image;
 
