@@ -76,3 +76,14 @@ docker-compose up --build
 ```
 
 L'application sera alors accessible sur `http://localhost:8000`.
+
+## Utilisation avec GitHub Codespaces
+
+Une configuration *devcontainer* est fournie pour lancer le projet avec PHP 8.3.14.
+Ouvrez ce dépôt dans GitHub Codespaces et attendez la fin de l'installation des dépendances.
+
+```bash
+symfony serve -d
+```
+
+Le port `8000` exposé par Codespaces permettra d'accéder à l'application.

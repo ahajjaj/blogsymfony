@@ -1,6 +1,6 @@
 FROM php:8.3.14-apache
 
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+ENV APACHE_DOCUMENT_ROOT=/workspaces/blogsymfony/public
 
 RUN apt-get update \
     && apt-get install -y git zip unzip libzip-dev libssl-dev openssl \
@@ -10,10 +10,4 @@ RUN apt-get update \
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
-WORKDIR /var/www/html
-COPY . .
-
-RUN composer install --no-dev --optimize-autoloader
-
-EXPOSE 80
-CMD ["apache2-foreground"]
+WORKDIR /workspaces/blogsymfony
