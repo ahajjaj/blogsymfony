@@ -27,7 +27,10 @@ class ArticleFixtures extends Fixture
             for($j=1; $j<=mt_rand(4,6); $j++){
                 $article = new Article();
                 $content = '<p>' . join($faker->paragraphs(5), '</p><p>') . '</p>';
-                $article->setTitle($faker->sentence())
+                $title = $faker->sentence();
+                $slug = strtolower(preg_replace('/[^a-z0-9]+/i', '-', trim($title)));
+                $article->setTitle($title)
+                        ->setSlug($slug)
                         ->setContent($content)
                         ->setImage($faker->imageUrl())
                         ->setCreatedAt($faker->dateTimeBetween('-6 months'))
