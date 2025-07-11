@@ -76,3 +76,16 @@ docker-compose up --build
 ```
 
 L'application sera alors accessible sur `http://localhost:8000`.
+
+## Utilisation avec GitHub Codespaces
+
+Ce dépôt inclut une configuration **devcontainer** permettant de démarrer rapideme
+nt l'application dans GitHub Codespaces avec PHP 8.3.14, OpenSSL et Composer préinstallés. Il suffit d'ouvrir le projet dans Codespaces puis d'exécuter :
+
+```bash
+composer install
+php bin/console doctrine:migrations:migrate
+symfony serve -d
+```
+
+L'application sera accessible sur `http://localhost:8000`.
