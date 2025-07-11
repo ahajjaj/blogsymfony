@@ -1,6 +1,6 @@
-# BlogSymfony
+# NovaBlog
 
-BlogSymfony est une application de blog construite avec le framework Symfony 5.2. Elle permet la gestion d'articles classés par catégories, la publication de commentaires et la gestion des utilisateurs avec un espace d'administration.
+NovaBlog est une application de blog construite avec le framework Symfony 5.2. Elle permet la gestion d'articles classés par catégories, la publication de commentaires et la gestion des utilisateurs avec un espace d'administration.
 
 ## Fonctionnalités principales
 
@@ -33,7 +33,7 @@ L'application suit l'architecture MVC classique de Symfony :
 1. Cloner ce dépôt puis se placer dans le dossier du projet :
    ```bash
    git clone <repository-url>
-   cd blogsymfony
+   cd novablog
    ```
 2. Installer les dépendances PHP :
    ```bash
