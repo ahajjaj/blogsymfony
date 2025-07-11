@@ -20,12 +20,12 @@ class User implements UserInterface
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type=Types::INTEGER)
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type=Types::STRING, length=255)
      * @Assert\Email()
      */
     private $email;
@@ -36,12 +36,12 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type=Types::STRING, length=255)
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type=Types::STRING, length=255)
      * @Assert\Length(min="8", minMessage="Votre mot de passe doit faire minimum 8 caractères")
      */
     private $password;
