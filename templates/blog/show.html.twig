@@ -2,50 +2,45 @@
 
 {% block body %}
 
-<section class="articles">
-     <article>
-          <h2>{{ article.title }}</h2>
-          <div class="metadata">Ecrit le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date('H:i') }} dans la catégorie {{ article.category.title }} </div>
-          <div class="content">
-                    <img src="{{ article.image }}" alt="">
-              {{ article.content | raw }}
-          </div>
-          <div class="col">
-          {% if article.image %}
-          <img class="img-fluid" src="{{asset('uploads/article/image/' ~ article.image) }}">
-          {% endif %}
-          </div>
-          <div>
-          {{ article.user.username }}
-          </div>
-          <a href="{{path('blog_edit', {'id': article.id})}}"> Modifier ! </a>
-     </article>
-     <section id="commentaires">
-     <h1>{{ article.comments | length }} Commentaires: </h1>
-     {% for comment in article.comments %}
-          <div class="comment">
-               <div class="row">
-                    <div class="col-3">
-                         {{comment.author}} (<small>{{comment.createdAt | date('d:m:Y à H:i')}}</small>)
-                    </div>
-                    <div class="col">
-                         {{comment.content | raw }}
-                    </div>
-               </div>
-          </div>
-     {% endfor %}
-     {% if app.user %}
-     {{ form_start(formComment) }}
+<div class="card mb-4">
+    {% if article.image %}
+        <img src="{{ asset('uploads/article/image/' ~ article.image) }}" class="card-img-top" alt="">
+    {% endif %}
+    <div class="card-body">
+        <h2 class="card-title">{{ article.title }}</h2>
+        <p class="text-muted">Écrit le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date('H:i') }} dans la catégorie {{ article.category.title }}</p>
+        <div class="card-text mb-3">
+            {{ article.content | raw }}
+        </div>
+        <p class="fw-light">{{ article.user.username }}</p>
+        <a href="{{ path('blog_edit', {'id': article.id}) }}" class="btn btn-secondary">Modifier</a>
+    </div>
+</div>
 
-     {{ form_row(formComment.author, {'attr': {'placeholder': "Votre nom" }})}}
-     {{ form_row(formComment.content, {'attr': {'placeholder': "Votre commentaire" }})}}
-     <button type="submit" class="btn btn-success"> Commenter ! </button>
-     
-     {{ form_end(formComment) }}
+<section id="commentaires" class="mb-5">
+    <h2>{{ article.comments | length }} Commentaires</h2>
+    {% for comment in article.comments %}
+        <div class="comment mb-3">
+            <div class="row">
+                <div class="col-3">
+                    {{ comment.author }} <small class="text-muted">{{ comment.createdAt | date('d/m/Y à H:i') }}</small>
+                </div>
+                <div class="col">
+                    {{ comment.content | raw }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 
-     {% else %}
-          <h2> Veuillez vous connecter pour <a href="{{ path('security_login') }}">commenter✍️</a></h2>
-     {% endif %}
-     </section>
+    {% if app.user %}
+        {{ form_start(formComment) }}
+        {{ form_row(formComment.author, {'attr': {'placeholder': 'Votre nom'}}) }}
+        {{ form_row(formComment.content, {'attr': {'placeholder': 'Votre commentaire'}}) }}
+        <button type="submit" class="btn btn-success">Commenter !</button>
+        {{ form_end(formComment) }}
+    {% else %}
+        <h2>Veuillez vous connecter pour <a href="{{ path('security_login') }}">commenter✍️</a></h2>
+    {% endif %}
 </section>
+
 {% endblock %}
