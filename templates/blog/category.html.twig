@@ -1,18 +1,44 @@
-
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Articles dans la catégorie {{ category.title }}</h1>
-
-    {% for article in articlesByCategory %}
-        <article>
-            <h2>{{ article.title }}</h2>
-            <div class="content">
-                {{ article.content|raw }}
-            </div>
-            <a href="{{ path('blog_show', {'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
-        </article>
+    {% if category is defined %}
+        <h1 class="mb-4">Articles dans la catégorie {{ category.title }}</h1>
+        <div class="row">
+            {% for article in articlesByCategory %}
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ article.title }}</h5>
+                            <p class="card-text">
+                                {{ article.content|striptags|slice(0, 150) }}...
+                            </p>
+                            <a href="{{ path('blog_show', {'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col">
+                    <p>Aucun article trouvé.</p>
+                </div>
+            {% endfor %}
+        </div>
     {% else %}
-        <p>Aucun article trouvé.</p>
-    {% endfor %}
+        <h1 class="mb-4">Catégories</h1>
+        <div class="row">
+            {% for category in categories %}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ category.title }}</h5>
+                            <p class="card-text">{{ category.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col">
+                    <p>Aucune catégorie disponible.</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}
