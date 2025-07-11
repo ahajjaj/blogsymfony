@@ -8,7 +8,7 @@ use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Service\FileUploader;
 use App\Repository\ArticleRepository;
-use App\Repository\CategoryRepository;
+use App\Entity\Category;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -61,7 +61,7 @@ class BlogController extends AbstractController
      * @Route("/blog/new", name="new_article")
      * @Route("/blog/{id}/edit", name="blog_edit")
      */
-    public function addArticle(Article $article = null, Request $request, EntityManagerInterface $manager, FileUploader $fileuploader) {
+    public function addArticle(Request $request, EntityManagerInterface $manager, FileUploader $fileuploader, ?Article $article = null) {
 
         if(!$article){
             $article = new Article();
