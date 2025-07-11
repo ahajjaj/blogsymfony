@@ -87,9 +87,15 @@ class BlogController extends AbstractController
             if(!$article->getId()) {
                 $article->setCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
             }
-            $file = $article->getImage(); 
-            $filename = $file ? $fileuploader->upload($file, $this->getParameter('article_image_directory')) : '';
-            $article->setImage($filename);
+            $file = $form->get('image')->getData();
+            if ($file) {
+                $filename = $fileuploader->upload(
+                    $file,
+                    $this->getParameter('article_image_directory'),
+                    $article->getImage()
+                );
+                $article->setImage($filename);
+            }
             //l'auteur de l'article est l'utilisateur connecté
             $article->setUser($this->getUser());
 

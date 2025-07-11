@@ -7,13 +7,10 @@
           <h2>{{ article.title }}</h2>
           <div class="metadata">Ecrit le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date('H:i') }} dans la catégorie {{ article.category.title }} </div>
           <div class="content">
-                    <img src="{{ article.image }}" alt="">
-              {{ article.content | raw }}
-          </div>
-          <div class="col">
-          {% if article.image %}
-          <img class="img-fluid" src="{{asset('uploads/article/image/' ~ article.image) }}">
-          {% endif %}
+               {% if article.image %}
+               <img class="img-fluid" src="{{ asset('uploads/article/image/' ~ article.image) }}" alt="">
+               {% endif %}
+               {{ article.content | raw }}
           </div>
           <div>
           {{ article.user.username }}
