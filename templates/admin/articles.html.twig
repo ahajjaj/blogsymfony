@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Liste des articles</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for article in articles %}
+        <tr>
+            <td>{{ article.id }}</td>
+            <td>{{ article.title }}</td>
+            <td>{{ article.user.username }}</td>
+            <td>
+                <a class="btn btn-warning" href="{{ path('blog_edit', {'id': article.id}) }}">Éditer</a>
+                <a class="btn btn-danger" href="{{ path('admin_delete_article', {'id': article.id}) }}">Supprimer</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="4">Aucun article</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
