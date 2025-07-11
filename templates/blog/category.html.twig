@@ -1,0 +1,18 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Articles dans la catégorie {{ category.title }}</h1>
+
+    {% for article in articlesByCategory %}
+        <article>
+            <h2>{{ article.title }}</h2>
+            <div class="content">
+                {{ article.content|raw }}
+            </div>
+            <a href="{{ path('blog_show', {'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
+        </article>
+    {% else %}
+        <p>Aucun article trouvé.</p>
+    {% endfor %}
+{% endblock %}

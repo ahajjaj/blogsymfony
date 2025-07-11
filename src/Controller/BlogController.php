@@ -38,21 +38,15 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/categories", name="show_categories")
+     * @Route("/categories/{id}", name="show_categories")
      */
-    public function category(CategoryRepository $repo, int $id): Response
+    public function category(Category $category, ArticleRepository $articleRepository): Response
     {
-        //$repo = $this->getDoctrine()->getRepository(Article::class);
-        $category = $repo->findAll();
+        $articles = $articleRepository->findBy(['category' => $category]);
 
-        $articles = $repo->findByCategory($id);
-
-        $category = $articles->getCategory();
-        
         return $this->render('blog/category.html.twig', [
-            'controller_name' => 'BlogController',
-            'categories' => $category,
-            'articlesByCategory' => $articles
+            'category' => $category,
+            'articlesByCategory' => $articles,
         ]);
     }
 
