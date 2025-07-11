@@ -18,33 +18,43 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div class="container">
             <a class="navbar-brand" href="{{ path('home') }}">NovaBlog</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="{{ path('blog') }}">Articles <span class="sr-only">
-                <li><a href="{{ path('new_article') }}">Créer un article</a></li>
-                {% if not app.user %}
-                <li class="nav-item"><a class="nav-link" href="{{ path('security_login') }}"> Connexion </a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ path('security_registration') }}"> Inscription </a></li>
-                {% elseif is_granted('ROLE_ADMIN') %}
-                <li class="nav-item"><a class="nav-link" href="{{ path('admin_users') }}"> Admin </a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ path('security_logout') }}"> Déconnexion </a></li>
-                {% else %}   
-                <li class="nav-item"><a class="nav-link" href="{{ path('security_logout') }}"> Déconnexion </a></li>
-                {% endif %}
-            </ul>
-            <form class="navbar-form navbar-left" action="{{ path('search') }}" method="get">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Recherche" name="q" value="{{ app.request.get('q') }}">
-                </div>
-                <button type="submit" class="btn btn-default">Rechercher</button>
-            </form>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="{{ path('blog') }}">Articles</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('new_article') }}">Créer un article</a></li>
+                    {% if not app.user %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('security_login') }}">Connexion</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('security_registration') }}">Inscription</a></li>
+                    {% elseif is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('admin_users') }}">Admin</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('security_logout') }}">Déconnexion</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('security_logout') }}">Déconnexion</a></li>
+                    {% endif %}
+                </ul>
+
+                <form class="d-flex" role="search" action="{{ path('search') }}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Search" name="q" value="{{ app.request.get('q') }}">
+                    <button class="btn btn-outline-success" type="submit">Rechercher</button>
+                </form>
             </div>
         </div>
     </nav>
 
     <div class="container">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label == 'error' ? 'danger' : label }} alert-dismissible fade show mt-2" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
         {% block body %}{% endblock %}
     </div>
 
