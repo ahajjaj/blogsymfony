@@ -56,7 +56,7 @@ class AdminController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             
-            $this->addFlash('message', 'Utilisateur modifie avec succès; ');
+            $this->addFlash('success', 'Utilisateur modifié avec succès.');
 
             return $this->redirectToRoute('admin_users');
         }
@@ -89,7 +89,7 @@ class AdminController extends AbstractController
         $em->remove($article);
         $em->flush();
 
-        $this->addFlash('message', 'Article supprimé');
+        $this->addFlash('success', 'Article supprimé');
 
         return $this->redirectToRoute('admin_articles');
     }
