@@ -1,16 +1,10 @@
 {
-  "name": "Blog Symfony",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
-  },
-  "forwardPorts": [8000],
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "bmewburn.vscode-intelephense-client",
-        "xdebug.php-debug"
-      ]
-    }
-  }
+    "name": "BlogSymfony",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "forwardPorts": [8000],
+    "postCreateCommand": "composer install",
+    "remoteUser": "root"
 }

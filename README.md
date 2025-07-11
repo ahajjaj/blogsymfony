@@ -79,13 +79,11 @@ L'application sera alors accessible sur `http://localhost:8000`.
 
 ## Utilisation avec GitHub Codespaces
 
-Ce dépôt inclut une configuration **devcontainer** permettant de démarrer rapideme
-nt l'application dans GitHub Codespaces avec PHP 8.3.14, OpenSSL et Composer préinstallés. Il suffit d'ouvrir le projet dans Codespaces puis d'exécuter :
+Une configuration *devcontainer* est fournie pour lancer le projet avec PHP 8.3.14.
+Ouvrez ce dépôt dans GitHub Codespaces et attendez la fin de l'installation des dépendances.
 
 ```bash
-composer install
-php bin/console doctrine:migrations:migrate
 symfony serve -d
 ```
 
-L'application sera accessible sur `http://localhost:8000`.
+Le port `8000` exposé par Codespaces permettra d'accéder à l'application.
