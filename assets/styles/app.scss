@@ -1,0 +1,21 @@
+@import "~bootstrap/scss/bootstrap";
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+footer {
+    background: #f1f1f1;
+    padding: 1rem 0;
+    text-align: center;
+}
