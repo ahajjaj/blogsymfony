@@ -3,13 +3,27 @@
 
 {% block body %}
 
-<div class="p-5 mb-4 bg-light rounded-3">
-    <div class="container py-5">
-        <h1 class="display-5 fw-bold">Bienvenue sur le blog&nbsp;!</h1>
-        <p class="col-md-8 fs-4">
-            Non consectetur dolor est occaecat laboris sunt deserunt consectetur. Nisi commodo consectetur irure ullamco duis qui cillum dolore aliqua commodo. Ut ad laborum esse laboris nostrud. Est reprehenderit amet est consectetur velit nostrud id. Pariatur officia officia ut tempor cupidatat ut non eiusmod reprehenderit exercitation cillum. Aute reprehenderit ea occaecat aliqua Lorem Lorem ullamco cupidatat nostrud in duis occaecat veniam. Commodo Lorem incididunt sint do et occaecat anim aute cupidatat. Proident magna anim ipsum labore pariatur exercitation. Ad fugiat aliqua deserunt nostrud sit do do cillum magna officia est duis id. Laborum do in proident eu consectetur pariatur amet occaecat non. Nisi duis adipisicing aliquip velit magna elit ut laboris quis amet nulla. Excepteur est ad mollit esse dolor tempor. Elit veniam aliquip cillum dolor pariatur eu irure id. Ea labore mollit laboris labore fugiat exercitation dolor. Veniam elit et eu quis sunt minim exercitation.
-        </p>
+<section class="hero" data-aos="fade-up">
+    <h1>Bienvenue sur NovaBlog</h1>
+    <a href="{{ path('blog') }}" class="btn btn-primary">Lire les articles</a>
+</section>
+<section class="mt-5">
+    <h2>Articles populaires</h2>
+    <div class="row">
+        {% for art in popular %}
+            <div class="col-md-4 mb-3" data-aos="zoom-in">
+                <div class="card h-100">
+                    {% if art.image %}
+                        <img src="{{ asset('uploads/article/image/' ~ art.image) }}" class="card-img-top" alt="">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ art.title }}</h5>
+                        <a href="{{ path('blog_show', {'slug': art.slug}) }}" class="btn btn-sm btn-outline-primary">Lire</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-</div>
+</section>
 
 {% endblock %}

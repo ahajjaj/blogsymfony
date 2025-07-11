@@ -57,8 +57,12 @@ class BlogController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function home() {
-        return $this->render('blog/home.html.twig');
+    public function home(ArticleRepository $repo): Response
+    {
+        $popular = $repo->findLatest(3);
+        return $this->render('blog/home.html.twig', [
+            'popular' => $popular
+        ]);
     }
     
     /**
@@ -66,7 +70,7 @@ class BlogController extends AbstractController
      * @Route("/blog/{id}/edit", name="blog_edit")
      */
 
-  public function addArticle(Article $article = null, Request $request, EntityManagerInterface $manager, FileUploader $fileuploader) {
+  public function addArticle(?Article $article = null, Request $request, EntityManagerInterface $manager, FileUploader $fileuploader) {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
   if(!$article){
