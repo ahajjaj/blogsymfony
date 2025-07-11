@@ -8,7 +8,7 @@ use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Service\FileUploader;
 use App\Repository\ArticleRepository;
-use App\Repository\CategoryRepository;
+use App\Entity\Category;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -42,21 +42,15 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/categories", name="show_categories")
+     * @Route("/categories/{id}", name="show_categories")
      */
-    public function category(CategoryRepository $repo, int $id): Response
+    public function category(Category $category, ArticleRepository $articleRepository): Response
     {
-        //$repo = $this->getDoctrine()->getRepository(Article::class);
-        $category = $repo->findAll();
+        $articles = $articleRepository->findBy(['category' => $category]);
 
-        $articles = $repo->findByCategory($id);
-
-        $category = $articles->getCategory();
-        
         return $this->render('blog/category.html.twig', [
-            'controller_name' => 'BlogController',
-            'categories' => $category,
-            'articlesByCategory' => $articles
+            'category' => $category,
+            'articlesByCategory' => $articles,
         ]);
     }
 
@@ -71,9 +65,11 @@ class BlogController extends AbstractController
      * @Route("/blog/new", name="new_article")
      * @Route("/blog/{id}/edit", name="blog_edit")
      */
-    public function addArticle(Article $article = null, Request $request, EntityManagerInterface $manager, FileUploader $fileuploader) {
 
-        if(!$article){
+  public function addArticle(Article $article = null, Request $request, EntityManagerInterface $manager, FileUploader $fileuploader) {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+  if(!$article){
             $article = new Article();
         }
 
@@ -96,6 +92,7 @@ class BlogController extends AbstractController
             $file = $article->getImage(); 
             $filename = $file ? $fileuploader->upload($file, $this->getParameter('article_image_directory')) : '';
             $article->setImage($filename);
+
             //l'auteur de l'article est l'utilisateur connecté
             $article->setUser($this->getUser());
 
