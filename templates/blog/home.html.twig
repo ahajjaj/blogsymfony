@@ -3,13 +3,27 @@
 
 {% block body %}
 
-<div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
-    <div class="container py-5 text-center">
-        <h1 class="display-4 fw-bold mb-3">Bienvenue sur NovaBlog</h1>
-        <p class="lead mb-4">Découvrez nos derniers articles et partagez vos idées avec la communauté.</p>
-        <a href="{{ path('blog') }}" class="btn btn-primary btn-lg">Voir les articles</a>
+<section class="hero" data-aos="fade-up">
+    <h1>Bienvenue sur NovaBlog</h1>
+    <a href="{{ path('blog') }}" class="btn btn-primary">Lire les articles</a>
+</section>
+<section class="mt-5">
+    <h2>Articles populaires</h2>
+    <div class="row">
+        {% for art in popular %}
+            <div class="col-md-4 mb-3" data-aos="zoom-in">
+                <div class="card h-100">
+                    {% if art.image %}
+                        <img src="{{ asset('uploads/article/image/' ~ art.image) }}" class="card-img-top" alt="">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ art.title }}</h5>
+                        <a href="{{ path('blog_show', {'slug': art.slug}) }}" class="btn btn-sm btn-outline-primary">Lire</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-</div>
+</section>
 
 {% endblock %}
-

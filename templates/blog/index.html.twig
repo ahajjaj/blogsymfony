@@ -1,40 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BlogController!{% endblock %}
+{% block title %}Articles{% endblock %}
 
 {% block body %}
-
-<section class="articles">
-     {% for article in articles %}
-          <article>
-               <h2>{{article.title}}</h2>
-               <div class="metadata">Ecrit le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date('H:i') }} dans la catégorie {{article.category.title }}</div>
-               <div class="content">
-                    <img src="{{ article.image }}" alt="">
-                    {{ article.content | raw }}
-                    <a href="{{ path('blog_show', {'slug' : article.slug}) }}" class="btn btn-primary">Lire la suite</a>
-               </div>
-          </article>
-
-          <section id="commentaires">
-          {% for comment in article.comments %}
-               <div class="comment">
-                    <div class="row">
-                         <div class="col-3">
-                              {{comment.author}} (<small>{{comment.createdAt | date('d:m:Y à H:i')}}</small>)
-                         </div>
-                         <div class="col">
-                              {{comment.content | raw }}
-                         </div>
-                         <div class="col">
-					{% if article.image %}
-					<img class="img-fluid" src="{{asset('uploads/article/image/' ~ article.image) }}">
-				     {% endif %}
-                         </div>
-                    </div>
-               </div>
-          {% endfor %}
-          </section>
-     {% endfor %}
-</section>
+<div class="row" data-aos="fade-up">
+    {% for article in articles %}
+        <div class="col-md-4 mb-4" data-aos="zoom-in">
+            <div class="card h-100">
+                {% if article.image %}
+                    <img src="{{ asset('uploads/article/image/' ~ article.image) }}" class="card-img-top" alt="">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.title }}</h5>
+                    <p class="card-text"><small class="text-muted">{{ article.createdAt|date('d/m/Y') }}</small></p>
+                    <a href="{{ path('blog_show', {'slug': article.slug}) }}" class="btn btn-primary">Lire la suite</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

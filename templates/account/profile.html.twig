@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="text-center" data-aos="fade-up">
+    <img src="https://www.gravatar.com/avatar/{{ user.email|md5 }}?d=mp" class="rounded-circle mb-3" width="120" height="120" alt="avatar">
+    <h2>{{ user.username }}</h2>
+    <p class="text-muted">{{ user.email }}</p>
+</div>
+<section class="mt-4" data-aos="fade-up">
+    <h3>Vos articles</h3>
+    <ul>
+        {% for art in user.articles %}
+            <li><a href="{{ path('blog_show', {'slug': art.slug}) }}">{{ art.title }}</a></li>
+        {% else %}
+            <li>Aucun article publié.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}
