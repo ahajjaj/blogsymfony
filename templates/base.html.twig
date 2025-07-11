@@ -4,50 +4,49 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}NovaBlog{% endblock %}</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
-
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
+        {{ encore_entry_link_tags('app') }}
+        {% block stylesheets %}{% endblock %}
     </head>
     <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="{{ path('home') }}">NovaBlog</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="{{ path('blog') }}">Articles <span class="sr-only">
-                <li><a href="{{ path('new_article') }}">Créer un article</a></li>
-                {% if not app.user %}
-                <li class="nav-item"><a class="nav-link" href="{{ path('security_login') }}"> Connexion </a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ path('security_registration') }}"> Inscription </a></li>
-                {% elseif is_granted('ROLE_ADMIN') %}
-                <li class="nav-item"><a class="nav-link" href="{{ path('admin_users') }}"> Admin </a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ path('security_logout') }}"> Déconnexion </a></li>
-                {% else %}   
-                <li class="nav-item"><a class="nav-link" href="{{ path('security_logout') }}"> Déconnexion </a></li>
-                {% endif %}
-            </ul>
-            <form class="navbar-form navbar-left" action="{{ path('search') }}" method="get">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Recherche" name="q" value="{{ app.request.get('q') }}">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+            <div class="container">
+                <a class="navbar-brand" href="{{ path('home') }}">NovaBlog</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ path('blog') }}">Articles</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('new_article') }}">Créer un article</a></li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        {% if not app.user %}
+                            <li class="nav-item me-2"><a class="btn btn-primary" href="{{ path('security_login') }}">Connexion</a></li>
+                            <li class="nav-item"><a class="btn btn-outline-primary" href="{{ path('security_registration') }}">Inscription</a></li>
+                        {% elseif is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('admin_users') }}">Admin</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('security_logout') }}">Déconnexion</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('security_logout') }}">Déconnexion</a></li>
+                        {% endif %}
+                    </ul>
                 </div>
-                <button type="submit" class="btn btn-default">Rechercher</button>
-            </form>
-
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <div class="container">
+    <main class="container py-4">
         {% block body %}{% endblock %}
-    </div>
+    </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <footer class="mt-5">
+        <div class="container">
+            <p class="mb-0">&copy; {{ "now"|date('Y') }} NovaBlog</p>
+        </div>
+    </footer>
+
+    {{ encore_entry_script_tags('app') }}
+    {% block javascripts %}{% endblock %}
     </body>
 </html>
