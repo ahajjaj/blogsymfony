@@ -34,15 +34,30 @@
      {% if app.user %}
      {{ form_start(formComment) }}
 
-     {{ form_row(formComment.author, {'attr': {'placeholder': "Votre nom" }})}}
-     {{ form_row(formComment.content, {'attr': {'placeholder': "Votre commentaire" }})}}
-     <button type="submit" class="btn btn-success"> Commenter ! </button>
-     
-     {{ form_end(formComment) }}
+<section id="commentaires" class="mb-5">
+    <h2>{{ article.comments | length }} Commentaires</h2>
+    {% for comment in article.comments %}
+        <div class="comment mb-3">
+            <div class="row">
+                <div class="col-3">
+                    {{ comment.author }} <small class="text-muted">{{ comment.createdAt | date('d/m/Y à H:i') }}</small>
+                </div>
+                <div class="col">
+                    {{ comment.content | raw }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 
-     {% else %}
-          <h2> Veuillez vous connecter pour <a href="{{ path('security_login') }}">commenter✍️</a></h2>
-     {% endif %}
-     </section>
+    {% if app.user %}
+        {{ form_start(formComment) }}
+        {{ form_row(formComment.author, {'attr': {'placeholder': 'Votre nom'}}) }}
+        {{ form_row(formComment.content, {'attr': {'placeholder': 'Votre commentaire'}}) }}
+        <button type="submit" class="btn btn-success">Commenter !</button>
+        {{ form_end(formComment) }}
+    {% else %}
+        <h2>Veuillez vous connecter pour <a href="{{ path('security_login') }}">commenter✍️</a></h2>
+    {% endif %}
 </section>
+
 {% endblock %}
