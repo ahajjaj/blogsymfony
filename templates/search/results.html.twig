@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats de recherche{% endblock %}
+
+{% block body %}
+<h1>Résultats pour "{{ query }}"</h1>
+
+<section class="articles">
+    {% if articles is not empty %}
+        {% for article in articles %}
+            <article>
+                <h2>{{ article.title }}</h2>
+                <div class="metadata">Ecrit le {{ article.createdAt|date('d/m/Y') }} à {{ article.createdAt|date('H:i') }} dans la catégorie {{ article.category.title }}</div>
+                <div class="content">
+                    {% if article.image %}
+                        <img class="img-fluid" src="{{ asset('uploads/article/image/' ~ article.image) }}" alt="">
+                    {% endif %}
+                    {{ article.content|raw }}
+                    <a href="{{ path('blog_show', {'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
+                </div>
+            </article>
+        {% endfor %}
+    {% else %}
+        <p>Aucun résultat trouvé.</p>
+    {% endif %}
+</section>
+{% endblock %}

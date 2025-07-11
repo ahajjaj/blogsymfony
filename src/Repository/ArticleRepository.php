@@ -36,6 +36,22 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * Search articles containing the provided term in the title or content.
+     *
+     * @param string $term
+     * @return Article[]
+     */
+    public function search(string $term): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.title LIKE :term OR a.content LIKE :term')
+            ->setParameter('term', '%' . $term . '%')
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?Article
     {

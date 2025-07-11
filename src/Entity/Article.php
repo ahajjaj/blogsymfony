@@ -28,16 +28,21 @@ class Article
     private $title;
 
     /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $slug;
+
+    /**
      * @ORM\Column(type="text")
      * @Assert\Length(min = 10)
      */
     private $content;
 
     /**
-     * @ORM\Column(type="string")
-     * Assert\Image
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Image
      */
-    private $image;
+    private ?string $image = null;
 
     /**
      * @ORM\Column(type="datetime")
@@ -82,6 +87,18 @@ class Article
         return $this;
     }
 
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
     public function getContent(): ?string
     {
         return $this->content;
@@ -94,12 +111,12 @@ class Article
         return $this;
     }
 
-    public function getImage()
+    public function getImage(): ?string
     {
         return $this->image;
     }
 
-    public function setImage($image)
+    public function setImage(?string $image): self
     {
         $this->image = $image;
 
