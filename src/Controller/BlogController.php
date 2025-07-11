@@ -15,13 +15,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BlogController extends AbstractController
 {
-    public function __construct(EntityManagerInterface $entityManager)
+    private $slugger;
+
+    public function __construct(EntityManagerInterface $entityManager, SluggerInterface $slugger)
     {
         $this->em = $entityManager;
+        $this->slugger = $slugger;
     }
     /**
      * @Route("/blog", name="blog")
@@ -83,24 +87,21 @@ class BlogController extends AbstractController
             if(!$article->getId()) {
                 $article->setCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
             }
-            $file = $form->get('image')->getData();
-            if ($file) {
-                $filename = $fileuploader->upload(
-                    $file,
-                    $this->getParameter('article_image_directory'),
-                    $article->getImage()
-                );
-                $article->setImage($filename);
-            }
+            $slug = strtolower($this->slugger->slug($article->getTitle()));
+            $article->setSlug($slug);
+            $file = $article->getImage(); 
+            $filename = $file ? $fileuploader->upload($file, $this->getParameter('article_image_directory')) : '';
+            $article->setImage($filename);
+
             //l'auteur de l'article est l'utilisateur connecté
             $article->setUser($this->getUser());
 
             $manager->persist($article);
             $manager->flush();
 
-	        $this->addFlash('success', 'article ajouté');
+                $this->addFlash('success', 'article ajouté');
             return $this->redirectToRoute('blog_show', [
-                'id' => $article->getId()
+                'slug' => $article->getSlug()
             ]);
         }
         return $this->render('blog/create.html.twig', [
@@ -111,11 +112,10 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/blog/{id}", name="blog_show")
+     * @Route("/blog/{slug}", name="blog_show")
      */
-    public function showArticle(Article $article, Request $request, EntityManagerInterface $manager) {
-        //$repo = $this->getDoctrine()->getRepository(Article::class);
-        //$article = $repo->find($id);
+    public function showArticle(ArticleRepository $repo, string $slug, Request $request, EntityManagerInterface $manager) {
+        $article = $repo->findOneBy(['slug' => $slug]);
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
 
@@ -130,7 +130,7 @@ class BlogController extends AbstractController
             $manager->flush();
 
             return $this->redirectToRoute('blog_show',
-             ['id' => $article->getId()]);
+             ['slug' => $article->getSlug()]);
         }
         return $this->render('blog/show.html.twig', [
             'article'=> $article,
