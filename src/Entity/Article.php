@@ -34,10 +34,10 @@ class Article
     private $content;
 
     /**
-     * @ORM\Column(type="string")
-     * Assert\Image
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Image
      */
-    private $image;
+    private ?string $image = null;
 
     /**
      * @ORM\Column(type="datetime")
@@ -94,12 +94,12 @@ class Article
         return $this;
     }
 
-    public function getImage()
+    public function getImage(): ?string
     {
         return $this->image;
     }
 
-    public function setImage($image)
+    public function setImage(?string $image): self
     {
         $this->image = $image;
 
