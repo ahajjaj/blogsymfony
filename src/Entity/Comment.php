@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -13,22 +14,22 @@ class Comment
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type=Types::INTEGER)
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type=Types::STRING, length=255)
      */
     private $author;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type=Types::STRING, length=255)
      */
     private $content;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type=Types::DATETIME_MUTABLE)
      */
     private $createdAt;
 

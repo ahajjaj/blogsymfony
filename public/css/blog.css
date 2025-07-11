@@ -1,0 +1,21 @@
+/* Simple responsive styles */
+body {
+    padding-top: 60px;
+}
+article {
+    margin-bottom: 2rem;
+}
+article .metadata {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+article img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+@media (min-width: 768px) {
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+}

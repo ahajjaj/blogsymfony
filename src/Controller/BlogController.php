@@ -133,6 +133,8 @@ class BlogController extends AbstractController
             $manager->persist($comment);
             $manager->flush();
 
+            $this->addFlash('success', 'Commentaire ajouté');
+
             return $this->redirectToRoute('blog_show',
              ['slug' => $article->getSlug()]);
         }
