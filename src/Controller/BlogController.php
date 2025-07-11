@@ -68,6 +68,7 @@ class BlogController extends AbstractController
      * @Route("/blog/{id}/edit", name="blog_edit")
      */
     public function addArticle(Article $article = null, Request $request, EntityManagerInterface $manager, FileUploader $fileuploader) {
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         if(!$article){
             $article = new Article();
